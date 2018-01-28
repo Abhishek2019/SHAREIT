@@ -30,7 +30,7 @@
         android:text="SENDER"
         android:id="@+id/button_sender"
         android:layout_marginTop="89dp"
-
+        android:textSize="20dp"
         android:layout_below="@+id/text_app_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -41,12 +41,27 @@
         android:layout_height="60dp"
         android:layout_width="match_parent"
         android:text="receiver"
+        android:textSize="20dp"
         android:id="@+id/button_receiver"
         android:layout_marginTop="40dp"
         android:layout_below="@+id/button_sender"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="onReceiver"
+        />
+
+
+    <Button
+        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:text="Give Permissions"
+        android:textSize="20dp"
+        android:id="@+id/button_permissions"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/button_receiver"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onPermission"
         />
 
 </RelativeLayout>

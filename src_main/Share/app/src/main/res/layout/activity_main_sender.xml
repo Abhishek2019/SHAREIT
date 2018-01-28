@@ -10,4 +10,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sa.share.MainActivity_sender">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/button_server"
+        android:text="Start Server"
+        android:textSize="20dp"
+        android:onClick="startServer"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/text_listen"
+        android:layout_below="@+id/button_server"
+        android:layout_marginTop="30dp"
+
+
+        />
+
+
 </RelativeLayout>

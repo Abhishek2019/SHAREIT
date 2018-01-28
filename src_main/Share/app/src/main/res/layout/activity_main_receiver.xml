@@ -10,4 +10,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sa.share.MainActivity_receiver">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/edit_serverIP"
+        android:hint="ServerIP"
+        android:layout_marginTop="56dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="connect to server"
+        android:id="@+id/button_connectClient"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/edit_serverIP"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="connectServer"
+        />
+
+
 </RelativeLayout>
