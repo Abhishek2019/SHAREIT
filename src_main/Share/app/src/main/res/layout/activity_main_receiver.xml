@@ -33,5 +33,13 @@
         android:onClick="connectServer"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/text_clientStatus"
+        android:layout_below="@+id/button_connectClient"
+        android:layout_marginTop="30dp"
+        />
+
 
 </RelativeLayout>
