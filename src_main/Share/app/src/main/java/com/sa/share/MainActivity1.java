@@ -96,7 +96,7 @@ public class MainActivity1 extends AppCompatActivity
 
     void onSender(View view){
 
-        Intent i = new Intent(this, MainActivity_sender.class);
+        Intent i = new Intent(this, FileChooser.class);
         startActivity(i);
 
     }
