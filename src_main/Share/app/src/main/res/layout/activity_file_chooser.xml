@@ -10,4 +10,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sa.share.FileChooser">
 
+    <Button
+        android:text="Permission for File Read"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:id="@+id/button_permission"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="permissionFile"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/button_picker"
+        android:layout_below="@id/button_permission"
+        android:text="choose file"
+        android:onClick="chooseFile"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/text_filePath"
+        android:layout_below="@id/button_picker"
+        android:layout_marginTop="30dp"
+
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/button_next"
+        android:text="Next"
+        android:layout_below="@id/text_filePath"
+        android:layout_marginTop="70dp"
+        android:onClick="moveNext"
+
+        />
+
+
 </RelativeLayout>

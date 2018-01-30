@@ -10,25 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sa.share.MainActivity_sender">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/text_serverStatus"
-
-        android:layout_marginTop="88dp"
-        android:layout_below="@+id/button_server"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/text_listen"
-        android:layout_marginTop="29dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -37,10 +18,29 @@
         android:textSize="20dp"
         android:onClick="startServer"
 
-        android:layout_marginTop="37dp"
         android:layout_below="@+id/text_listen"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/text_listen"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/text_serverStatus"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/button_server"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
 
 
 </RelativeLayout>

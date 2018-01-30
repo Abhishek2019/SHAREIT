@@ -69,7 +69,7 @@ public class MainActivity1 extends AppCompatActivity
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // Display a SnackBar with a button to request the missing permission.
-            Snackbar.make(mLayout, "Camera access is required to display the camera preview.",
+            Snackbar.make(mLayout, "Internet access is required to display the camera preview.",
                     Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

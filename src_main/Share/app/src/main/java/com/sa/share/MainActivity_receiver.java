@@ -7,7 +7,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 
 public class MainActivity_receiver extends AppCompatActivity {
@@ -16,10 +19,17 @@ public class MainActivity_receiver extends AppCompatActivity {
     String IP;
     int SERVERPORT = 2935;
     boolean connected = false;
+    boolean sending = false;
     Handler handler;
 
     TextView clientStatus;
     EditText serverIP;
+
+    int filesize = 100000; // filesize temporary hardcoded
+
+    long start = System.currentTimeMillis();
+    int bytesRead;
+    int current = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,43 @@ public class MainActivity_receiver extends AppCompatActivity {
                     public void run() {
                         if(connected) {
                             clientStatus.setText("connected");
+
+                        }
+                    }
+                });
+
+
+
+                byte [] mybytearray  = new byte [filesize];
+                InputStream is = clientSocket.getInputStream();
+                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/abhi.txt");
+                BufferedOutputStream bos = new BufferedOutputStream(fos);
+                bytesRead = is.read(mybytearray,0,mybytearray.length);
+                current = bytesRead;
+
+
+                do {
+                    bytesRead =
+                            is.read(mybytearray, current, (mybytearray.length-current));
+                    if(bytesRead >= 0) current += bytesRead;
+                } while(bytesRead > -1);
+
+                bos.write(mybytearray, 0 , current);
+                bos.flush();
+                long end = System.currentTimeMillis();
+                System.out.println(end-start);
+                bos.close();
+                clientSocket.close();
+                sending = true;
+
+
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if(sending){
+                            clientStatus.setText("received");
                         }
                     }
                 });
