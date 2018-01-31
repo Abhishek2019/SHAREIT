@@ -74,7 +74,11 @@ public class MainActivity_sender extends AppCompatActivity {
     void ipGenerator(View view){
 
         try {
-            bitmap = TextToImageEncode(filePath);
+
+
+            String [] segments = filePath.split("/");
+            Toast.makeText(this,segments[(segments.length)-1],Toast.LENGTH_LONG).show();
+            bitmap = TextToImageEncode(segments[(segments.length)-1]);
 
             img_QR.setImageBitmap(bitmap);
 
@@ -84,7 +88,7 @@ public class MainActivity_sender extends AppCompatActivity {
 
 
     }
-    
+
 
     Bitmap TextToImageEncode(String Value) throws WriterException {
         BitMatrix bitMatrix;
