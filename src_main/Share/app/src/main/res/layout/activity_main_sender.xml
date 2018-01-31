@@ -40,7 +40,25 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/button_QRcodegen"
+        android:layout_below="@+id/imageView_QR"
+        android:text="Create QR of ip"
+        android:layout_marginTop="20dp"
+        android:onClick="ipGenerator"
+        />
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_QR"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_serverStatus"
+        android:layout_marginTop="30dp"
+        />
 
 
 </RelativeLayout>

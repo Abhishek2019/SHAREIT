@@ -73,17 +73,18 @@ public class MainActivity_receiver extends AppCompatActivity {
 
                 byte [] mybytearray  = new byte [filesize];
                 InputStream is = clientSocket.getInputStream();
-                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/abhi.txt");
+                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/abhi.docx");
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(mybytearray,0,mybytearray.length);
                 current = bytesRead;
 
-
                 do {
-                    bytesRead =
-                            is.read(mybytearray, current, (mybytearray.length-current));
-                    if(bytesRead >= 0) current += bytesRead;
-                } while(bytesRead > -1);
+                    bytesRead =is.read(mybytearray, current, (mybytearray.length-current));
+                    if(bytesRead > 0)
+                    {
+                        current += bytesRead;
+                    }
+                } while(bytesRead > 0);
 
                 bos.write(mybytearray, 0 , current);
                 bos.flush();
