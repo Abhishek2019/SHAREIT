@@ -41,7 +41,7 @@ public class MainActivity_receiver extends AppCompatActivity {
     TextView clientStatus;
     EditText serverIP;
 
-    int filesize = 1000000000; // filesize temporary hardcoded
+    int filesize = 100000000; // filesize temporary hardcoded
 
 
     long start = System.currentTimeMillis();
