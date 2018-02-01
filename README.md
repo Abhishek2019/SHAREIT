@@ -1,2 +1,10 @@
 # SHAREIT
-File Transfer Application
+Android Application for File transfer
+
+#file extentations
+	
+	- .txt
+	- .pdf
+	- .docx
+	- .doc
+	- .clv
