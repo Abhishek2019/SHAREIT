@@ -3,6 +3,7 @@ package com.sa.share;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -158,10 +160,20 @@ public class MainActivity_receiver extends AppCompatActivity {
                 });
 
 
+                File ShareFile = new File(Environment.getExternalStorageDirectory()+File.separator+"ShareFile");
+
+                if(!ShareFile.exists() && !ShareFile.isDirectory())
+                {
+                    // create empty directory
+                    ShareFile.mkdirs();
+
+                }
+
+
 
                 byte [] mybytearray  = new byte [filesize];
                 InputStream is = clientSocket.getInputStream();
-                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/"+fileName);
+                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/ShareFile/"+fileName);
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(mybytearray,0,mybytearray.length);
                 current = bytesRead;
