@@ -41,12 +41,15 @@ public class MainActivity_receiver extends AppCompatActivity {
     TextView clientStatus;
     EditText serverIP;
 
-    int filesize = 100000; // filesize temporary hardcoded
+    int filesize = 1000000000; // filesize temporary hardcoded
 
 
     long start = System.currentTimeMillis();
     int bytesRead;
     int current = 0;
+
+    String segments[];
+    String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,12 @@ public class MainActivity_receiver extends AppCompatActivity {
                 try {
 
                     Toast.makeText(this,result.getContents(),Toast.LENGTH_LONG).show();
+
+                    segments = result.getContents().split("/");
+                    IP = segments[0];
+                    fileName = segments[1];
+
+                    serverIP.setText(IP);
                     //converting the data to json
                     //JSONObject obj = new JSONObject(result.getContents());
                     //setting values to textviews
@@ -97,7 +106,7 @@ public class MainActivity_receiver extends AppCompatActivity {
                     //that means the encoded format not matches
                     //in this case you can display whatever data is available on the qrcode
                     //to a toast
-                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                 }
             }
         } else {
@@ -133,7 +142,7 @@ public class MainActivity_receiver extends AppCompatActivity {
 
         public void run(){
 
-            IP = serverIP.getText().toString();
+            //IP = serverIP.getText().toString();
             try {
                 clientSocket = new Socket(IP, SERVERPORT);
                 connected = true;
@@ -152,7 +161,7 @@ public class MainActivity_receiver extends AppCompatActivity {
 
                 byte [] mybytearray  = new byte [filesize];
                 InputStream is = clientSocket.getInputStream();
-                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/abhi.docx");
+                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/"+fileName);
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(mybytearray,0,mybytearray.length);
                 current = bytesRead;
