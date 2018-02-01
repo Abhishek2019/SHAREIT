@@ -1,7 +1,7 @@
 # SHAREIT
 Android Application for File transfer
 
-#file extentations
+# File Extentations
 	
 	- .txt
 	- .pdf
