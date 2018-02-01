@@ -1,10 +1,17 @@
 package com.sa.share;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Formatter;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +39,7 @@ public class MainActivity_sender extends AppCompatActivity {
     Handler handler;
 
     public final static int QRcodeWidth = 500 ;
+    int PERMISSION_REQUEST_CODE = 1;
     Bitmap bitmap ;
 
     TextView listenText;
@@ -40,6 +48,7 @@ public class MainActivity_sender extends AppCompatActivity {
 
 
     String filePath;
+    String IP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +72,23 @@ public class MainActivity_sender extends AppCompatActivity {
         handler = new Handler();
     }
 
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted.
+                //Toast.makeText(this,"permission WIFI_ACCESS",Toast.LENGTH_SHORT).show();
+                IP = IPgen();
+                Toast.makeText(this,IP,Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+
     void startServer(View view){
 
 
@@ -76,9 +102,20 @@ public class MainActivity_sender extends AppCompatActivity {
         try {
 
 
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE}, PERMISSION_REQUEST_CODE);
+            } else {
+                //Toast.makeText(this,"permission for WIFI already granted",Toast.LENGTH_SHORT).show();
+                IP = IPgen();
+                Toast.makeText(this,IP,Toast.LENGTH_LONG).show();
+            }
+
+
+
             String [] segments = filePath.split("/");
             Toast.makeText(this,segments[(segments.length)-1],Toast.LENGTH_LONG).show();
-            bitmap = TextToImageEncode(segments[(segments.length)-1]);
+            bitmap = TextToImageEncode(IP+"/"+segments[(segments.length)-1]);
 
             img_QR.setImageBitmap(bitmap);
 
@@ -87,6 +124,13 @@ public class MainActivity_sender extends AppCompatActivity {
         }
 
 
+    }
+
+    String IPgen(){
+
+        WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
+        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+        return ip;
     }
 
 
