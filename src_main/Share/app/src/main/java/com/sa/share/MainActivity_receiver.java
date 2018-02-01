@@ -41,6 +41,13 @@ public class MainActivity_receiver extends AppCompatActivity {
 
     }
 
+
+    void scanIP(View view){
+
+
+
+    }
+
     void connectServer(View view){
 
         //IP = serverIP.getText().toString();

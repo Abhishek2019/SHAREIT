@@ -15,10 +15,22 @@
         android:layout_height="60dp"
         android:id="@+id/edit_serverIP"
         android:hint="ServerIP"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/button_QRscanner"
+        android:text="Scan IP address"
+        android:layout_below="@id/edit_serverIP"
+        android:layout_marginTop="30dp"
+        android:textSize="20dp"
+        android:onClick="scanIP"
+        />
+
 
     <Button
         android:layout_width="match_parent"
@@ -27,11 +39,13 @@
         android:id="@+id/button_connectClient"
         android:textSize="20dp"
         android:layout_marginTop="50dp"
-        android:layout_below="@+id/edit_serverIP"
+        android:layout_below="@+id/button_QRscanner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="connectServer"
         />
+
+
 
     <TextView
         android:layout_width="match_parent"
@@ -39,6 +53,7 @@
         android:id="@+id/text_clientStatus"
         android:layout_below="@+id/button_connectClient"
         android:layout_marginTop="30dp"
+
         />
 
 
