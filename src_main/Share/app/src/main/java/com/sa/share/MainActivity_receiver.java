@@ -45,7 +45,6 @@ public class MainActivity_receiver extends AppCompatActivity {
 
     int filesize = 100000000; // filesize temporary hardcoded
 
-
     long start = System.currentTimeMillis();
     int bytesRead;
     int current = 0;
@@ -62,7 +61,6 @@ public class MainActivity_receiver extends AppCompatActivity {
         qrScan = new IntentIntegrator(this);
         serverIP = (EditText)findViewById(R.id.edit_serverIP);
         clientStatus = (TextView)findViewById(R.id.text_clientStatus);
-
     }
 
     @Override
@@ -75,8 +73,6 @@ public class MainActivity_receiver extends AppCompatActivity {
             }
         }
     }
-
-
 
     //Getting the scan results
     @Override
@@ -117,8 +113,7 @@ public class MainActivity_receiver extends AppCompatActivity {
     }
 
 
-
-    void scanIP(View view){
+    public void scanIP(View view){
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -129,13 +124,13 @@ public class MainActivity_receiver extends AppCompatActivity {
 
         }
 
+        System.out.println("Internal File Path : "+getFilesDir().toString());
+
     }
 
-    void connectServer(View view){
-
+    public void connectServer(View view){
         //IP = serverIP.getText().toString();
-
-            //clientSocket = new Socket(IP, SERVERPORT);
+        //clientSocket = new Socket(IP, SERVERPORT);
         Thread clientThread = new Thread(new ClientThread());
         clientThread.start();
     }
@@ -154,30 +149,24 @@ public class MainActivity_receiver extends AppCompatActivity {
                     public void run() {
                         if(connected) {
                             clientStatus.setText("connected");
-
                         }
                     }
                 });
 
 
-                File ShareFile = new File(Environment.getExternalStorageDirectory()+File.separator+"ShareFile");
-
+                File ShareFile = new File(getFilesDir().toString());
                 if(!ShareFile.exists() && !ShareFile.isDirectory())
                 {
                     // create empty directory
                     ShareFile.mkdirs();
-
                 }
-
-
 
                 byte [] mybytearray  = new byte [filesize];
                 InputStream is = clientSocket.getInputStream();
-                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/ShareFile/"+fileName);
+                FileOutputStream fos = new FileOutputStream(ShareFile+"/"+fileName);
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(mybytearray,0,mybytearray.length);
                 current = bytesRead;
-
                 do {
                     bytesRead =is.read(mybytearray, current, (mybytearray.length-current));
                     if(bytesRead > 0)
@@ -192,26 +181,20 @@ public class MainActivity_receiver extends AppCompatActivity {
                 System.out.println(end-start);
                 bos.close();
                 clientSocket.close();
-                sending = true;
-
-
-
+                if(new File(ShareFile+"/"+fileName).exists()) {
+                    sending = true;
+                }
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-
                         if(sending){
                             clientStatus.setText("received");
                         }
                     }
                 });
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
-
 }

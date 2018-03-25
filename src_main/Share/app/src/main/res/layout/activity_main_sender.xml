@@ -10,22 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sa.share.MainActivity_sender">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/button_server"
-        android:text="Start Server"
-        android:textSize="20dp"
-        android:onClick="startServer"
-
-        android:layout_below="@+id/text_listen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/text_listen"
+        android:textAlignment="center"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -36,9 +25,31 @@
         android:layout_height="40dp"
         android:id="@+id/text_serverStatus"
         android:layout_marginTop="12dp"
-        android:layout_below="@+id/button_server"
+        android:textAlignment="center"
+        android:layout_below="@+id/text_listen"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/button_server"
+        android:text="Start Server"
+        android:textSize="20dp"
+        android:onClick="startServer"
+        android:layout_below="@+id/text_serverStatus"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView_QR"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/button_server"
+        android:layout_marginTop="30dp"
+        />
 
     <Button
         android:layout_width="match_parent"
@@ -47,20 +58,7 @@
         android:layout_below="@+id/imageView_QR"
         android:text="Create QR of ip"
         android:layout_marginTop="20dp"
-        android:onClick="ipGenerator"
+        android:visibility="gone"
         />
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView_QR"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/text_serverStatus"
-        android:layout_marginTop="30dp"
-        />
-
-
-
 
 </RelativeLayout>

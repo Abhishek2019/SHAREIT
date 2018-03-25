@@ -24,8 +24,8 @@ public class MainActivity1 extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
-
-        mLayout=findViewById(R.id.activity_main1);
+        mLayout = findViewById(R.id.activity_main1);
+        onPermission();
     }
 
 
@@ -48,7 +48,7 @@ public class MainActivity1 extends AppCompatActivity
     }
 
 
-    void onPermission(View view){
+   public void onPermission(){
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -90,22 +90,15 @@ public class MainActivity1 extends AppCompatActivity
         }
     }
 
-
-
-
-
-    void onSender(View view){
+   public void onSender(View view){
 
         Intent i = new Intent(this, FileChooser.class);
         startActivity(i);
+   }
 
-    }
-
-    void onReceiver(View view){
+   public void onReceiver(View view){
         Intent i = new Intent(this, MainActivity_receiver.class);
         startActivity(i);
-
-
-    }
+   }
 
 }

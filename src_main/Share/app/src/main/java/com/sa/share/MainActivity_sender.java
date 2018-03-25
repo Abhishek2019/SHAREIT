@@ -46,7 +46,6 @@ public class MainActivity_sender extends AppCompatActivity {
     TextView serverStatus;
     ImageView img_QR;
 
-
     String filePath;
     String IP;
 
@@ -89,19 +88,15 @@ public class MainActivity_sender extends AppCompatActivity {
 
 
 
-    void startServer(View view){
-
+    public void startServer(View view){
 
             Thread serverThread = new Thread(new ServerThread());
             serverThread.start();
-
+            ipGenerator();
     }
 
-    void ipGenerator(View view){
-
+    public void ipGenerator(){
         try {
-
-
             int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE);
             if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_WIFI_STATE}, PERMISSION_REQUEST_CODE);
@@ -110,34 +105,26 @@ public class MainActivity_sender extends AppCompatActivity {
                 IP = IPgen();
                 Toast.makeText(this,IP,Toast.LENGTH_LONG).show();
             }
-
-
-
             String [] segments = filePath.split("/");
             Toast.makeText(this,segments[(segments.length)-1],Toast.LENGTH_LONG).show();
             bitmap = TextToImageEncode(IP+"/"+segments[(segments.length)-1]);
-
             img_QR.setImageBitmap(bitmap);
 
         } catch (WriterException e) {
             e.printStackTrace();
         }
-
-
     }
 
     String IPgen(){
-
-        WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
         return ip;
     }
 
-
     Bitmap TextToImageEncode(String Value) throws WriterException {
         BitMatrix bitMatrix;
         try {
-            bitMatrix = new MultiFormatWriter().encode(
+                bitMatrix = new MultiFormatWriter().encode(
                     Value,
                     BarcodeFormat.DATA_MATRIX.QR_CODE,
                     QRcodeWidth, QRcodeWidth, null
@@ -168,17 +155,14 @@ public class MainActivity_sender extends AppCompatActivity {
         return bitmap;
     }
 
-
     class ServerThread implements Runnable{
-
 
         public void run(){
             try {
-
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listenText.setText("Listening on port : "+SERVERPORT);
+                        listenText.setText("Listening on port : "+IP+":"+SERVERPORT);
                     }
                 });
 
@@ -207,20 +191,15 @@ public class MainActivity_sender extends AppCompatActivity {
                             serverStatus.setText("sending File ...");
                         }
                     });
-
                     os.write(mybytearray,0,mybytearray.length);
                     os.flush();
                     client.close();
-
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-
         }
-
     }
 
 }
