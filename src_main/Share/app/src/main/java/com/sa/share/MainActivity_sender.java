@@ -66,11 +66,8 @@ public class MainActivity_sender extends AppCompatActivity {
         serverStatus = (TextView)findViewById(R.id.text_serverStatus);
         serverStatus.setText("Disconnected");
 
-
-
         handler = new Handler();
     }
-
 
 
     @Override
@@ -105,9 +102,12 @@ public class MainActivity_sender extends AppCompatActivity {
                 IP = IPgen();
                 Toast.makeText(this,IP,Toast.LENGTH_LONG).show();
             }
+            System.out.println("File path is :"+filePath);
             String [] segments = filePath.split("/");
+
+            System.out.println("File Size in Byte /"+(new File(filePath).length()));
             Toast.makeText(this,segments[(segments.length)-1],Toast.LENGTH_LONG).show();
-            bitmap = TextToImageEncode(IP+"/"+segments[(segments.length)-1]);
+            bitmap = TextToImageEncode(IP+"/"+segments[(segments.length)-1]+"/"+(new File(filePath).length()));
             img_QR.setImageBitmap(bitmap);
 
         } catch (WriterException e) {

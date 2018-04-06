@@ -10,7 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +33,7 @@ import java.net.Socket;
 public class MainActivity_receiver extends AppCompatActivity {
 
     Socket clientSocket;
-    String IP;
+    String IP = "";
     int SERVERPORT = 2935;
     boolean connected = false;
     boolean sending = false;
@@ -43,7 +45,7 @@ public class MainActivity_receiver extends AppCompatActivity {
     TextView clientStatus;
     EditText serverIP;
 
-    int filesize = 100000000; // filesize temporary hardcoded
+    int filesize = 1024; // filesize temporary hardcoded
 
     long start = System.currentTimeMillis();
     int bytesRead;
@@ -87,30 +89,20 @@ public class MainActivity_receiver extends AppCompatActivity {
                 try {
 
                     Toast.makeText(this,result.getContents(),Toast.LENGTH_LONG).show();
-
                     segments = result.getContents().split("/");
                     IP = segments[0];
                     fileName = segments[1];
-
+                    filesize = Byte.parseByte(segments[2]);
                     serverIP.setText(IP);
-                    //converting the data to json
-                    //JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    //textViewName.setText(obj.getString("name"));
-                    //textViewAddress.setText(obj.getString("address"));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
-                    //Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
 
     public void scanIP(View view){
@@ -124,24 +116,25 @@ public class MainActivity_receiver extends AppCompatActivity {
 
         }
 
-        System.out.println("Internal File Path : "+getFilesDir().toString());
-
     }
 
     public void connectServer(View view){
         //IP = serverIP.getText().toString();
         //clientSocket = new Socket(IP, SERVERPORT);
+        System.out.println("This is IP : "+IP);
+        if(IP.equals("0.0.0.0") || IP.equals("")){
+            Toast.makeText(this, "Invalid Sender", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Thread clientThread = new Thread(new ClientThread());
         clientThread.start();
     }
 
     class ClientThread implements Runnable{
-
         public void run(){
-
             //IP = serverIP.getText().toString();
             try {
-                clientSocket = new Socket(IP, SERVERPORT);
+                clientSocket = new Socket(MainActivity_receiver.this.IP, MainActivity_receiver.this.SERVERPORT);
                 connected = true;
 
                 handler.post(new Runnable() {
@@ -153,24 +146,28 @@ public class MainActivity_receiver extends AppCompatActivity {
                     }
                 });
 
+                File ShareFile = new File(Environment.getExternalStorageDirectory()+File.separator+"ShareFile");
 
-                File ShareFile = new File(getFilesDir().toString());
+                System.out.println(ShareFile.toString());
+
                 if(!ShareFile.exists() && !ShareFile.isDirectory())
                 {
                     // create empty directory
                     ShareFile.mkdirs();
                 }
 
-                byte [] mybytearray  = new byte [filesize];
+                System.out.println("Actual Location : "+new File(ShareFile,MainActivity_receiver.this.fileName).toString());
+
+                byte [] mybytearray  = new byte [MainActivity_receiver.this.filesize];
                 InputStream is = clientSocket.getInputStream();
-                FileOutputStream fos = new FileOutputStream(ShareFile+"/"+fileName);
+                FileOutputStream fos = new FileOutputStream(new File(ShareFile,MainActivity_receiver.this.fileName));
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(mybytearray,0,mybytearray.length);
                 current = bytesRead;
+
                 do {
                     bytesRead =is.read(mybytearray, current, (mybytearray.length-current));
-                    if(bytesRead > 0)
-                    {
+                    if(bytesRead > 0) {
                         current += bytesRead;
                     }
                 } while(bytesRead > 0);
@@ -181,9 +178,8 @@ public class MainActivity_receiver extends AppCompatActivity {
                 System.out.println(end-start);
                 bos.close();
                 clientSocket.close();
-                if(new File(ShareFile+"/"+fileName).exists()) {
-                    sending = true;
-                }
+                sending = true;
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -197,4 +193,5 @@ public class MainActivity_receiver extends AppCompatActivity {
             }
         }
     }
+
 }
