@@ -11,25 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.necistudio.libarary.FilePickerActivity;
 
+import java.io.File;
 
 public class FileChooser extends AppCompatActivity {
 
     TextView filePath;
-
     int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_chooser);
-
-        filePath = (TextView)findViewById(R.id.text_filePath);
-
+        filePath = (TextView) findViewById(R.id.text_filePath);
+        permissionFile();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class FileChooser extends AppCompatActivity {
 
     }
 
-    void permissionFile(View view) {
+    public void permissionFile() {
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -67,23 +67,21 @@ public class FileChooser extends AppCompatActivity {
         } else {
             Toast.makeText(this,"permission already granted",Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    void chooseFile(View view){
-
+    public void chooseFile(View view){
         Intent intent = new Intent(getApplicationContext(),FilePickerActivity.class);
         startActivityForResult(intent, 1);
     }
 
-    void moveNext(View view){
-        if(!filePath.getText().toString().equals(null)){
+    public void moveNext(View view){
+        System.out.println(new File(filePath.getText().toString()).exists());
+        if(new File(filePath.getText().toString()).exists()){
             Intent intent = new Intent(this, MainActivity_sender.class);
             intent.putExtra("path",filePath.getText().toString());
             startActivity(intent);
+        } else {
+            Toast.makeText(this, "Please Select a File", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 }

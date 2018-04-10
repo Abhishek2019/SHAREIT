@@ -8,12 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#daf1f2"
     tools:context="com.sa.share.MainActivity1">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="SHAREIT"
+        android:text="ShareFile"
         android:id="@+id/text_app_name"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -22,46 +23,37 @@
         android:textAllCaps="true"
         android:textSize="40dp"
         android:textColor="@color/black"
+        android:textStyle="italic"
         />
 
     <Button
         android:layout_height="60dp"
         android:layout_width="match_parent"
-        android:text="SENDER"
+        android:text="SEND"
         android:id="@+id/button_sender"
         android:layout_marginTop="89dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_below="@+id/text_app_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="onSender"
+        android:textColor="#ffff"
+        android:background="@layout/mybutton"
         />
 
     <Button
         android:layout_height="60dp"
         android:layout_width="match_parent"
-        android:text="receiver"
-        android:textSize="20dp"
+        android:text="receive"
+        android:textSize="20sp"
         android:id="@+id/button_receiver"
         android:layout_marginTop="40dp"
         android:layout_below="@+id/button_sender"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="onReceiver"
-        />
-
-
-    <Button
-        android:layout_height="60dp"
-        android:layout_width="match_parent"
-        android:text="Give Permissions"
-        android:textSize="20dp"
-        android:id="@+id/button_permissions"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/button_receiver"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="onPermission"
+        android:textColor="#ffff"
+        android:background="@layout/mybutton"
         />
 
 </RelativeLayout>

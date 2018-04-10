@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#daf1f2"
     tools:context="com.sa.share.FileChooser">
 
     <Button
@@ -19,7 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="permissionFile"
+        android:visibility="gone"
         />
 
     <Button
@@ -29,15 +30,18 @@
         android:layout_below="@id/button_permission"
         android:text="choose file"
         android:onClick="chooseFile"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="#ffff"
+        android:background="@layout/mybutton"
         />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:id="@+id/text_filePath"
         android:layout_below="@id/button_picker"
         android:layout_marginTop="30dp"
-
         />
 
     <Button
@@ -46,10 +50,11 @@
         android:id="@+id/button_next"
         android:text="Next"
         android:layout_below="@id/text_filePath"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:onClick="moveNext"
-
+        android:textSize="20sp"
+        android:textColor="#ffff"
+        android:background="@layout/mybutton"
         />
-
 
 </RelativeLayout>

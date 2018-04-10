@@ -10,7 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +33,7 @@ import java.net.Socket;
 public class MainActivity_receiver extends AppCompatActivity {
 
     Socket clientSocket;
-    String IP;
+    String IP = "";
     int SERVERPORT = 2935;
     boolean connected = false;
     boolean sending = false;
@@ -43,8 +45,7 @@ public class MainActivity_receiver extends AppCompatActivity {
     TextView clientStatus;
     EditText serverIP;
 
-    int filesize = 100000000; // filesize temporary hardcoded
-
+    int filesize = 1024; // filesize temporary hardcoded
 
     long start = System.currentTimeMillis();
     int bytesRead;
@@ -62,7 +63,6 @@ public class MainActivity_receiver extends AppCompatActivity {
         qrScan = new IntentIntegrator(this);
         serverIP = (EditText)findViewById(R.id.edit_serverIP);
         clientStatus = (TextView)findViewById(R.id.text_clientStatus);
-
     }
 
     @Override
@@ -75,8 +75,6 @@ public class MainActivity_receiver extends AppCompatActivity {
             }
         }
     }
-
-
 
     //Getting the scan results
     @Override
@@ -91,24 +89,13 @@ public class MainActivity_receiver extends AppCompatActivity {
                 try {
 
                     Toast.makeText(this,result.getContents(),Toast.LENGTH_LONG).show();
-
                     segments = result.getContents().split("/");
                     IP = segments[0];
                     fileName = segments[1];
-
+                    filesize = Byte.parseByte(segments[2]);
                     serverIP.setText(IP);
-                    //converting the data to json
-                    //JSONObject obj = new JSONObject(result.getContents());
-                    //setting values to textviews
-                    //textViewName.setText(obj.getString("name"));
-                    //textViewAddress.setText(obj.getString("address"));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    //if control comes here
-                    //that means the encoded format not matches
-                    //in this case you can display whatever data is available on the qrcode
-                    //to a toast
-                    //Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                 }
             }
         } else {
@@ -118,7 +105,7 @@ public class MainActivity_receiver extends AppCompatActivity {
 
 
 
-    void scanIP(View view){
+    public void scanIP(View view){
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -131,22 +118,23 @@ public class MainActivity_receiver extends AppCompatActivity {
 
     }
 
-    void connectServer(View view){
-
+    public void connectServer(View view){
         //IP = serverIP.getText().toString();
-
-            //clientSocket = new Socket(IP, SERVERPORT);
+        //clientSocket = new Socket(IP, SERVERPORT);
+        System.out.println("This is IP : "+IP);
+        if(IP.equals("0.0.0.0") || IP.equals("")){
+            Toast.makeText(this, "Invalid Sender", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Thread clientThread = new Thread(new ClientThread());
         clientThread.start();
     }
 
     class ClientThread implements Runnable{
-
         public void run(){
-
             //IP = serverIP.getText().toString();
             try {
-                clientSocket = new Socket(IP, SERVERPORT);
+                clientSocket = new Socket(MainActivity_receiver.this.IP, MainActivity_receiver.this.SERVERPORT);
                 connected = true;
 
                 handler.post(new Runnable() {
@@ -154,34 +142,32 @@ public class MainActivity_receiver extends AppCompatActivity {
                     public void run() {
                         if(connected) {
                             clientStatus.setText("connected");
-
                         }
                     }
                 });
 
-
                 File ShareFile = new File(Environment.getExternalStorageDirectory()+File.separator+"ShareFile");
+
+                System.out.println(ShareFile.toString());
 
                 if(!ShareFile.exists() && !ShareFile.isDirectory())
                 {
                     // create empty directory
                     ShareFile.mkdirs();
-
                 }
 
+                System.out.println("Actual Location : "+new File(ShareFile,MainActivity_receiver.this.fileName).toString());
 
-
-                byte [] mybytearray  = new byte [filesize];
+                byte [] mybytearray  = new byte [MainActivity_receiver.this.filesize];
                 InputStream is = clientSocket.getInputStream();
-                FileOutputStream fos = new FileOutputStream("/storage/emulated/0/ShareFile/"+fileName);
+                FileOutputStream fos = new FileOutputStream(new File(ShareFile,MainActivity_receiver.this.fileName));
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bytesRead = is.read(mybytearray,0,mybytearray.length);
                 current = bytesRead;
 
                 do {
                     bytesRead =is.read(mybytearray, current, (mybytearray.length-current));
-                    if(bytesRead > 0)
-                    {
+                    if(bytesRead > 0) {
                         current += bytesRead;
                     }
                 } while(bytesRead > 0);
@@ -194,24 +180,18 @@ public class MainActivity_receiver extends AppCompatActivity {
                 clientSocket.close();
                 sending = true;
 
-
-
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-
                         if(sending){
                             clientStatus.setText("received");
                         }
                     }
                 });
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
 }
